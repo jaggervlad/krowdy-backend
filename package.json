@@ -10,7 +10,14 @@
     "lint:fix": "eslint \"src/**/*.{ts,js}\" --fix",
     "format": "prettier --check \"src/**/*.{ts,js}\"",
     "format:fix": "prettier --write \"src/**/*.{ts,js}\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:status": "prisma migrate status",
+    "db:reset": "prisma migrate reset",
+    "db:push": "prisma db push",
+    "prisma:generate": "prisma generate",
+    "prisma:studio": "prisma studio"
   },
   "keywords": [],
   "author": "",
@@ -20,12 +27,14 @@
     "@apollo/server": "^5.0.0",
     "@graphql-tools/merge": "^9.1.1",
     "@graphql-tools/schema": "^10.0.25",
+    "@prisma/client": "^6.15.0",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "graphql": "^16.11.0",
     "graphql-tag": "^2.12.6",
-    "helmet": "^8.1.0"
+    "helmet": "^8.1.0",
+    "prisma": "^6.15.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
