@@ -1,16 +1,30 @@
-import express, { Request, Response } from 'express';
+import { ApolloServer } from '@apollo/server';
+import { startStandaloneServer } from '@apollo/server/standalone';
+import { createSchema } from './config/graphql/schema';
 
-const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = Number(process.env.PORT) || 4000;
 
-app.get('/health', (req: Request, res: Response) => {
-  res.json({
-    status: 'ok',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime()
+async function bootstrap() {
+  const schema = await createSchema();
+
+  const server = new ApolloServer({
+    schema,
   });
-});
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  const { url } = await startStandaloneServer(server, {
+    listen: { port: PORT },
+    context: async ({ req }) => {
+      return {
+        user: req.headers.authorization ? 'authenticated-user' : null,
+        req,
+      };
+    },
+  });
+
+  console.log(`🚀 GraphQL Server ready at ${url}`);
+}
+
+bootstrap().catch((error) => {
+  console.error('Error starting server:', error);
+  process.exit(1);
 });
